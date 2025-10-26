@@ -90,6 +90,12 @@ public class AppleMapController: NSObject, FlutterPlatformView {
                 case "map#update":
                     self.mapView.interpretOptions(options: args["options"] as! Dictionary<String, Any>)
                     break
+                case "map#setAppearanceMode":
+                    if let mode: Int = args["appearanceMode"] as? Int {
+                        self.mapView.setAppearanceMode(appearanceMode: mode)
+                    }
+                    result(nil)
+                    break
                 case "camera#animate":
                     self.animateCamera(args: args)
                     result(nil)
@@ -138,6 +144,9 @@ public class AppleMapController: NSObject, FlutterPlatformView {
                     break
                 case "map#getMinMaxZoomLevels":
                     result([self.mapView.minZoomLevel, self.mapView.maxZoomLevel])
+                    break
+                case "map#getAppearanceMode":
+                    result(self.mapView.getAppearanceMode())
                     break
                 case "camera#getZoomLevel":
                     result(self.mapView.calculatedZoomLevel)

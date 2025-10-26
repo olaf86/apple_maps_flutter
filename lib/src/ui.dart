@@ -16,6 +16,18 @@ enum MapType {
   hybrid,
 }
 
+/// Defines the appearance mode for the map.
+enum MapAppearanceMode {
+  /// Follows the system appearance setting (default).
+  unspecified,
+
+  /// Forces light mode.
+  light,
+
+  /// Forces dark mode.
+  dark,
+}
+
 enum TrackingMode {
   // the user's location is not followed
   none,

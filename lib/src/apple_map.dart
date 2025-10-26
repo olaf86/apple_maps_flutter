@@ -43,6 +43,7 @@ class AppleMap extends StatefulWidget {
     this.onLongPress,
     this.snapshotOptions,
     this.insetsLayoutMarginsFromSafeArea = true,
+    this.appearanceMode = MapAppearanceMode.unspecified,
   }) : super(key: key);
 
   final MapCreatedCallback? onMapCreated;
@@ -169,6 +170,11 @@ class AppleMap extends StatefulWidget {
   /// A Boolean value indicating whether the view's layout margins are updated
   /// automatically to reflect the safe area.
   final bool insetsLayoutMarginsFromSafeArea;
+
+  /// The appearance mode of the map.
+  ///
+  /// Defaults to [MapAppearanceMode.unspecified] which follows the system setting.
+  final MapAppearanceMode appearanceMode;
 
   @override
   State createState() => _AppleMapState();
@@ -342,6 +348,7 @@ class _AppleMapOptions {
     this.myLocationButtonEnabled,
     this.padding,
     this.insetsLayoutMarginsFromSafeArea,
+    this.appearanceMode,
   });
 
   static _AppleMapOptions fromWidget(AppleMap map) {
@@ -359,6 +366,7 @@ class _AppleMapOptions {
       myLocationButtonEnabled: map.myLocationButtonEnabled,
       padding: map.padding,
       insetsLayoutMarginsFromSafeArea: map.insetsLayoutMarginsFromSafeArea,
+      appearanceMode: map.appearanceMode,
     );
   }
 
@@ -388,6 +396,8 @@ class _AppleMapOptions {
 
   final bool? insetsLayoutMarginsFromSafeArea;
 
+  final MapAppearanceMode? appearanceMode;
+
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> optionsMap = <String, dynamic>{};
 
@@ -411,6 +421,7 @@ class _AppleMapOptions {
     addIfNonNull('padding', _serializePadding(padding));
     addIfNonNull(
         'insetsLayoutMarginsFromSafeArea', insetsLayoutMarginsFromSafeArea);
+    addIfNonNull('appearanceMode', appearanceMode?.index);
     return optionsMap;
   }
 

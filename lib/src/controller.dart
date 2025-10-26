@@ -244,4 +244,16 @@ class AppleMapController {
     return channel.invokeMethod<Uint8List>(
         'map#takeSnapshot', snapshotOptions._toMap());
   }
+
+  /// Sets the appearance mode of the map.
+  ///
+  /// Use [MapAppearanceMode.unspecified] to follow system settings,
+  /// [MapAppearanceMode.light] for light mode, or [MapAppearanceMode.dark]
+  /// for dark mode.
+  Future<void> setAppearanceMode(MapAppearanceMode mode) {
+    return channel
+        .invokeMethod<void>('map#setAppearanceMode', <String, dynamic>{
+      'appearanceMode': mode.index,
+    });
+  }
 }

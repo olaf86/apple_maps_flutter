@@ -105,6 +105,65 @@ void main() {
     expect(zoomLevel, equals(finalZoomLevel));
   });
 
+  test('appearanceMode initial value', () async {
+    final Key key = GlobalKey();
+    final Completer<AppleMapInspector> inspectorCompleter =
+        Completer<AppleMapInspector>();
+
+    await pumpWidget(Directionality(
+      textDirection: TextDirection.ltr,
+      child: AppleMap(
+        key: key,
+        initialCameraPosition: _kInitialCameraPosition,
+        appearanceMode: MapAppearanceMode.light,
+        onMapCreated: (AppleMapController controller) {
+          final AppleMapInspector inspector =
+              // ignore: invalid_use_of_visible_for_testing_member
+              AppleMapInspector(controller.channel);
+          inspectorCompleter.complete(inspector);
+        },
+      ),
+    ));
+
+    final AppleMapInspector inspector = await inspectorCompleter.future;
+    final MapAppearanceMode mode = await inspector.getAppearanceMode();
+    expect(mode, MapAppearanceMode.light);
+  });
+
+  test('appearanceMode runtime change via controller', () async {
+    final Key key = GlobalKey();
+    final Completer<AppleMapInspector> inspectorCompleter =
+        Completer<AppleMapInspector>();
+    AppleMapController? controllerRef;
+
+    await pumpWidget(Directionality(
+      textDirection: TextDirection.ltr,
+      child: AppleMap(
+        key: key,
+        initialCameraPosition: _kInitialCameraPosition,
+        appearanceMode: MapAppearanceMode.unspecified,
+        onMapCreated: (AppleMapController controller) {
+          controllerRef = controller;
+          final AppleMapInspector inspector =
+              // ignore: invalid_use_of_visible_for_testing_member
+              AppleMapInspector(controller.channel);
+          inspectorCompleter.complete(inspector);
+        },
+      ),
+    ));
+
+    final AppleMapInspector inspector = await inspectorCompleter.future;
+
+    // Change to dark mode at runtime and verify.
+    await controllerRef!.setAppearanceMode(MapAppearanceMode.dark);
+
+    // Give the platform side a brief moment to apply.
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+
+    final MapAppearanceMode modeAfter = await inspector.getAppearanceMode();
+    expect(modeAfter, MapAppearanceMode.dark);
+  });
+
   test('testZoomGesturesEnabled', () async {
     final Key key = GlobalKey();
     final Completer<AppleMapInspector> inspectorCompleter =

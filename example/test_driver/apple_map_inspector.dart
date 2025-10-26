@@ -45,4 +45,9 @@ class AppleMapInspector {
   Future<bool?> isMyLocationButtonEnabled() async {
     return await _channel.invokeMethod<bool>('map#isMyLocationButtonEnabled');
   }
+
+  Future<MapAppearanceMode> getAppearanceMode() async {
+    final int index = (await _channel.invokeMethod<int>('map#getAppearanceMode'))!;
+    return MapAppearanceMode.values[index];
+  }
 }

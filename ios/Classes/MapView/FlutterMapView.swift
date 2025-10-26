@@ -112,6 +112,10 @@ class FlutterMapView: MKMapView, UIGestureRecognizerDelegate {
     }
     
     func interpretOptions(options: Dictionary<String, Any>) {
+        if let appearanceMode = options["appearanceMode"] as? Int {
+            setAppearanceMode(appearanceMode: appearanceMode)
+        }
+
         if let isCompassEnabled: Bool = options["compassEnabled"] as? Bool {
             if #available(iOS 9.0, *) {
                 self.showsCompass = isCompassEnabled
@@ -201,6 +205,36 @@ class FlutterMapView: MKMapView, UIGestureRecognizerDelegate {
             }
         }
 
+    }
+    
+    func setAppearanceMode(appearanceMode: Int) {
+        if #available(iOS 13.0, *) {
+            switch appearanceMode {
+            case 1:
+                self.overrideUserInterfaceStyle = .light
+            case 2:
+                self.overrideUserInterfaceStyle = .dark
+            default:
+                self.overrideUserInterfaceStyle = .unspecified
+            }
+        } else {
+            // Do nothing on older iOS versions
+        }
+    }
+    
+    func getAppearanceMode() -> Int {
+        if #available(iOS 13.0, *) {
+            switch self.overrideUserInterfaceStyle {
+            case .light:
+                return 1
+            case .dark:
+                return 2
+            default:
+                return 0
+            }
+        } else {
+            return 0
+        }
     }
     
     func setUserLocation() {
