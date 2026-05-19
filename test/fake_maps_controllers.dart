@@ -132,6 +132,8 @@ class FakePlatformAppleMap {
       final bool draggable = annotationData['draggable'];
       final bool visible = annotationData['visible'];
       final double alpha = annotationData['alpha'];
+      final String? clusteringIdentifier =
+          annotationData['clusteringIdentifier'] as String?;
 
       final dynamic infoWindowData = annotationData['infoWindow'];
       InfoWindow infoWindow = InfoWindow.noText;
@@ -150,6 +152,7 @@ class FakePlatformAppleMap {
           visible: visible,
           infoWindow: infoWindow,
           alpha: alpha,
+          clusteringIdentifier: clusteringIdentifier,
         ),
       );
     }
