@@ -6,7 +6,7 @@ import 'page.dart';
 
 class AppearanceModePage extends ExamplePage {
   AppearanceModePage()
-      : super(const Icon(Icons.dark_mode), 'Appearance mode (Light/Dark)');
+    : super(const Icon(Icons.dark_mode), 'Appearance mode (Light/Dark)');
 
   @override
   Widget build(BuildContext context) =>

@@ -20,9 +20,9 @@ class AppleMapInspector {
   }
 
   Future<MinMaxZoomPreference> getMinMaxZoomLevels() async {
-    final List<double> zoomLevels =
-        (await _channel.invokeMethod<List<dynamic>>('map#getMinMaxZoomLevels'))!
-            .cast<double>();
+    final List<double> zoomLevels = (await _channel.invokeMethod<List<dynamic>>(
+      'map#getMinMaxZoomLevels',
+    ))!.cast<double>();
     return MinMaxZoomPreference(zoomLevels[0], zoomLevels[1]);
   }
 
@@ -47,7 +47,9 @@ class AppleMapInspector {
   }
 
   Future<MapAppearanceMode> getAppearanceMode() async {
-    final int index = (await _channel.invokeMethod<int>('map#getAppearanceMode'))!;
+    final int index = (await _channel.invokeMethod<int>(
+      'map#getAppearanceMode',
+    ))!;
     return MapAppearanceMode.values[index];
   }
 }

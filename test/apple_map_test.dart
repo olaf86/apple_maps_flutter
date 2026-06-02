@@ -17,7 +17,8 @@ void main() {
 
   setUpAll(() {
     SystemChannels.platform_views.setMockMethodCallHandler(
-        fakePlatformViewsController.fakePlatformViewsMethodHandler);
+      fakePlatformViewsController.fakePlatformViewsMethodHandler,
+    );
   });
 
   setUp(() {
@@ -38,13 +39,16 @@ void main() {
     final FakePlatformAppleMap platformAppleMap =
         fakePlatformViewsController.lastCreatedView!;
 
-    expect(platformAppleMap.cameraPosition,
-        const CameraPosition(target: LatLng(10.0, 15.0)));
+    expect(
+      platformAppleMap.cameraPosition,
+      const CameraPosition(target: LatLng(10.0, 15.0)),
+    );
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('Initial camera position change is a no-op',
-      (WidgetTester tester) async {
+  testWidgets('Initial camera position change is a no-op', (
+    WidgetTester tester,
+  ) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await tester.pumpWidget(
       const Directionality(
@@ -67,8 +71,10 @@ void main() {
     final FakePlatformAppleMap platformAppleMap =
         fakePlatformViewsController.lastCreatedView!;
 
-    expect(platformAppleMap.cameraPosition,
-        const CameraPosition(target: LatLng(10.0, 15.0)));
+    expect(
+      platformAppleMap.cameraPosition,
+      const CameraPosition(target: LatLng(10.0, 15.0)),
+    );
     debugDefaultTargetPlatformOverride = null;
   });
 
@@ -149,8 +155,10 @@ void main() {
     final FakePlatformAppleMap platformAppleMap =
         fakePlatformViewsController.lastCreatedView!;
 
-    expect(platformAppleMap.minMaxZoomPreference,
-        const MinMaxZoomPreference(1.0, 3.0));
+    expect(
+      platformAppleMap.minMaxZoomPreference,
+      const MinMaxZoomPreference(1.0, 3.0),
+    );
 
     await tester.pumpWidget(
       const Directionality(
@@ -163,7 +171,9 @@ void main() {
     );
 
     expect(
-        platformAppleMap.minMaxZoomPreference, MinMaxZoomPreference.unbounded);
+      platformAppleMap.minMaxZoomPreference,
+      MinMaxZoomPreference.unbounded,
+    );
     debugDefaultTargetPlatformOverride = null;
   });
 
@@ -322,8 +332,9 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
-  testWidgets('Can update myLocationButtonEnabled',
-      (WidgetTester tester) async {
+  testWidgets('Can update myLocationButtonEnabled', (
+    WidgetTester tester,
+  ) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     await tester.pumpWidget(
       const Directionality(
@@ -351,6 +362,86 @@ void main() {
     );
 
     expect(platformAppleMap.myLocationButtonEnabled, false);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('Can set initial appearanceMode', (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: AppleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          appearanceMode: MapAppearanceMode.light,
+        ),
+      ),
+    );
+
+    final FakePlatformAppleMap platformAppleMap =
+        fakePlatformViewsController.lastCreatedView!;
+
+    expect(platformAppleMap.appearanceMode, MapAppearanceMode.light);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('Can update appearanceMode', (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: AppleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          appearanceMode: MapAppearanceMode.light,
+        ),
+      ),
+    );
+
+    final FakePlatformAppleMap platformAppleMap =
+        fakePlatformViewsController.lastCreatedView!;
+
+    expect(platformAppleMap.appearanceMode, MapAppearanceMode.light);
+
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: AppleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          appearanceMode: MapAppearanceMode.dark,
+        ),
+      ),
+    );
+
+    expect(platformAppleMap.appearanceMode, MapAppearanceMode.dark);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('Controller can update appearanceMode', (
+    WidgetTester tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    AppleMapController? controller;
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: AppleMap(
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(10.0, 15.0),
+          ),
+          onMapCreated: (AppleMapController value) {
+            controller = value;
+          },
+        ),
+      ),
+    );
+
+    final FakePlatformAppleMap platformAppleMap =
+        fakePlatformViewsController.lastCreatedView!;
+
+    expect(platformAppleMap.appearanceMode, MapAppearanceMode.unspecified);
+
+    await controller!.setAppearanceMode(MapAppearanceMode.dark);
+
+    expect(platformAppleMap.appearanceMode, MapAppearanceMode.dark);
     debugDefaultTargetPlatformOverride = null;
   });
 }

@@ -89,6 +89,7 @@ public class AppleMapController: NSObject, FlutterPlatformView {
                     break
                 case "map#update":
                     self.mapView.interpretOptions(options: args["options"] as! Dictionary<String, Any>)
+                    result(nil)
                     break
                 case "map#setAppearanceMode":
                     if let mode: Int = args["appearanceMode"] as? Int {

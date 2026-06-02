@@ -75,7 +75,7 @@ class CameraTargetBounds {
 
 class MinMaxZoomPreference {
   const MinMaxZoomPreference(this.minZoom, this.maxZoom)
-      : assert(minZoom == null || maxZoom == null || minZoom <= maxZoom);
+    : assert(minZoom == null || maxZoom == null || minZoom <= maxZoom);
 
   /// The preferred minimum zoom level or null, if unbounded from below.
   final double? minZoom;
@@ -84,8 +84,10 @@ class MinMaxZoomPreference {
   final double? maxZoom;
 
   /// Unbounded zooming.
-  static const MinMaxZoomPreference unbounded =
-      MinMaxZoomPreference(null, null);
+  static const MinMaxZoomPreference unbounded = MinMaxZoomPreference(
+    null,
+    null,
+  );
 
   dynamic _toJson() => <dynamic>[minZoom, maxZoom];
 
