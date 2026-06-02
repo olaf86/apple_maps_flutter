@@ -269,11 +269,12 @@ void main() {
 
   testWidgets("Partial Update", (WidgetTester tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    final Annotation m1 = Annotation(annotationId: AnnotationId("annotation_1"));
+    final Annotation m1 =
+        Annotation(annotationId: AnnotationId("annotation_1"));
     Annotation m2 = Annotation(annotationId: AnnotationId("annotation_2"));
     final Set<Annotation> prev = _toSet(m1: m1, m2: m2);
-    m2 = Annotation(
-        annotationId: AnnotationId("annotation_2"), draggable: true);
+    m2 =
+        Annotation(annotationId: AnnotationId("annotation_2"), draggable: true);
     final Set<Annotation> cur = _toSet(m1: m1, m2: m2);
 
     await tester.pumpWidget(_mapWithAnnotations(prev));
@@ -291,14 +292,19 @@ void main() {
   testWidgets("Unchanged annotation is not in annotationsToChange",
       (WidgetTester tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    final Annotation m1 = Annotation(annotationId: AnnotationId("annotation_1"));
-    final Annotation m2 = Annotation(annotationId: AnnotationId("annotation_2"));
+    final Annotation m1 =
+        Annotation(annotationId: AnnotationId("annotation_1"));
+    final Annotation m2 =
+        Annotation(annotationId: AnnotationId("annotation_2"));
 
     await tester.pumpWidget(_mapWithAnnotations(_toSet(m1: m1, m2: m2)));
     // Same annotation set, different instances but identical content.
-    final Annotation m1Same = Annotation(annotationId: AnnotationId("annotation_1"));
-    final Annotation m2Same = Annotation(annotationId: AnnotationId("annotation_2"));
-    await tester.pumpWidget(_mapWithAnnotations(_toSet(m1: m1Same, m2: m2Same)));
+    final Annotation m1Same =
+        Annotation(annotationId: AnnotationId("annotation_1"));
+    final Annotation m2Same =
+        Annotation(annotationId: AnnotationId("annotation_2"));
+    await tester
+        .pumpWidget(_mapWithAnnotations(_toSet(m1: m1Same, m2: m2Same)));
 
     final FakePlatformAppleMap platformAppleMap =
         fakePlatformViewsController.lastCreatedView!;

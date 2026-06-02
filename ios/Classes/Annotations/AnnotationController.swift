@@ -278,12 +278,19 @@ extension AppleMapController: AnnotationDelegate {
                 oldAnnotation.isVisible = annotation.isVisible
                 oldAnnotation.title = annotation.title
                 oldAnnotation.subtitle = annotation.subtitle
+                oldAnnotation.clusteringIdentifier = annotation.clusteringIdentifier
             })
+            if annotation.zIndex > self.maxAnnotationZIndex {
+                self.maxAnnotationZIndex = annotation.zIndex
+            }
             
             // Update the annotation view with the new image
             if let view = self.mapView.view(for: oldAnnotation) {
                 let newAnnotationView = getAnnotationView(annotation: annotation)
                 view.image = newAnnotationView.image
+                if #available(iOS 11.0, *) {
+                    view.clusteringIdentifier = annotation.clusteringIdentifier
+                }
             }
         }
     }

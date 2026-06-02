@@ -236,8 +236,7 @@ class Annotation {
       visible: visibleParam ?? visible,
       zIndex: zIndexParam ?? zIndex,
       onDragEnd: onDragEndParam ?? onDragEnd,
-      clusteringIdentifier:
-          clusteringIdentifierParam ?? clusteringIdentifier,
+      clusteringIdentifier: clusteringIdentifierParam ?? clusteringIdentifier,
     );
   }
 
