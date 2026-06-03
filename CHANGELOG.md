@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0
+
+* Added Swift Package Manager support for iOS while keeping CocoaPods support.
+
 ## 1.6.0
 
 * Performance: every `mapView.annotations.filter { ... }` lookup in
