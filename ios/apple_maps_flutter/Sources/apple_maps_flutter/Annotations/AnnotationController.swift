@@ -11,6 +11,10 @@ import MapKit
 extension AppleMapController: AnnotationDelegate {
 
     public func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView)  {
+        if let userLocation = view.annotation as? MKUserLocation {
+            mapView.deselectAnnotation(userLocation, animated: false)
+            return
+        }
         if #available(iOS 11.0, *),
            let cluster = view.annotation as? MKClusterAnnotation {
             mapView.deselectAnnotation(cluster, animated: false)
