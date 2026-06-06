@@ -19,6 +19,7 @@ class FlutterMapView: MKMapView, UIGestureRecognizerDelegate {
     weak var mapContainerView: UIView?
     weak var channel: FlutterMethodChannel?
     var oldBounds: CGRect?
+    var pendingInitialCameraPosition: Dictionary<String, Any>?
     var options: Dictionary<String, Any>?
     var isMyLocationButtonShowing: Bool? = false
     
@@ -75,11 +76,18 @@ class FlutterMapView: MKMapView, UIGestureRecognizerDelegate {
             if self.options != nil {
                 self.interpretOptions(options: self.options!)
             }
-            if #available(iOS 9.0, *) {
-                setCenterCoordinateWithAltitude(centerCoordinate: centerCoordinate, zoomLevel: zoomLevel, animated: false)
-                mapContainerView = self.findViewOfType("MKScrollContainerView", inView: self)
+            if let initialPosition = pendingInitialCameraPosition, self.bounds.size != CGSize.zero {
+                self.setCenterCoordinate(initialPosition, animated: false)
+                pendingInitialCameraPosition = nil
             } else {
-                setCenterCoordinateRegion(centerCoordinate: centerCoordinate, zoomLevel: zoomLevel, animated: false)
+                if #available(iOS 9.0, *) {
+                    setCenterCoordinateWithAltitude(centerCoordinate: centerCoordinate, zoomLevel: zoomLevel, animated: false)
+                } else {
+                    setCenterCoordinateRegion(centerCoordinate: centerCoordinate, zoomLevel: zoomLevel, animated: false)
+                }
+            }
+            if #available(iOS 9.0, *) {
+                mapContainerView = self.findViewOfType("MKScrollContainerView", inView: self)
             }
         }
         oldBounds = self.bounds

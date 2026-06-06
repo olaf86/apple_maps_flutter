@@ -45,7 +45,7 @@ public class AppleMapController: NSObject, FlutterPlatformView {
         
         self.mapView.delegate = self
         
-        self.mapView.setCenterCoordinate(initialCameraPosition, animated: false)
+        self.mapView.pendingInitialCameraPosition = initialCameraPosition
         self.setMethodCallHandlers()
         
         if let annotationsToAdd: NSArray = args["annotationsToAdd"] as? NSArray {
