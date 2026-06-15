@@ -200,6 +200,23 @@ class AppleMapController {
     );
   }
 
+  /// Animates the native annotation view scale without changing the
+  /// annotation set, image, z-index, or map camera.
+  Future<void> animateMarkerScale(
+    AnnotationId annotationId, {
+    required double scale,
+    Duration duration = const Duration(milliseconds: 220),
+  }) {
+    return channel.invokeMethod<void>(
+      'annotations#animateScale',
+      <String, dynamic>{
+        'annotationId': annotationId.value,
+        'scale': scale,
+        'durationMilliseconds': duration.inMilliseconds,
+      },
+    );
+  }
+
   /// Changes the map camera position without animating the transition.
   ///
   /// The returned [Future] completes after the change has been made on the
@@ -217,8 +234,8 @@ class AppleMapController {
 
   /// Return [LatLngBounds] defining the region that is visible in a map.
   Future<LatLngBounds> getVisibleRegion() async {
-    final Map<String, dynamic>? latLngBounds = await channel
-        .invokeMapMethod<String, dynamic>('map#getVisibleRegion');
+    final Map<String, dynamic>? latLngBounds =
+        await channel.invokeMapMethod<String, dynamic>('map#getVisibleRegion');
     final LatLng southwest = LatLng._fromJson(latLngBounds?['southwest'])!;
     final LatLng northeast = LatLng._fromJson(latLngBounds?['northeast'])!;
 

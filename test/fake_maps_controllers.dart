@@ -71,6 +71,12 @@ class FakePlatformAppleMap {
 
   Set<Circle>? circlesToChange;
 
+  String? animatedAnnotationId;
+
+  double? animatedAnnotationScale;
+
+  int? animatedAnnotationDurationMilliseconds;
+
   Future<dynamic> onMethodCall(MethodCall call) {
     switch (call.method) {
       case 'map#update':
@@ -82,6 +88,12 @@ class FakePlatformAppleMap {
         return Future<void>.sync(() {});
       case 'annotations#update':
         updateAnnotations(call.arguments);
+        return Future<void>.sync(() {});
+      case 'annotations#animateScale':
+        animatedAnnotationId = call.arguments['annotationId'];
+        animatedAnnotationScale = call.arguments['scale'];
+        animatedAnnotationDurationMilliseconds =
+            call.arguments['durationMilliseconds'];
         return Future<void>.sync(() {});
       case 'polylines#update':
         updatePolylines(call.arguments);

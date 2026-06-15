@@ -76,12 +76,22 @@ public class AppleMapController: NSObject, FlutterPlatformView {
                     break
                 case "annotations#showInfoWindow":
                     self.selectAnnotation(with: args["annotationId"] as! String)
+                    result(nil)
                     break
                 case "annotations#hideInfoWindow":
                     self.hideAnnotation(with: args["annotationId"] as! String)
+                    result(nil)
                     break
                 case "annotations#isInfoWindowShown":
                     result(self.isAnnotationSelected(with: args["annotationId"] as! String))
+                    break
+                case "annotations#animateScale":
+                    self.animateAnnotationScale(
+                        with: args["annotationId"] as! String,
+                        scale: args["scale"] as! Double,
+                        durationMilliseconds: args["durationMilliseconds"] as! Int
+                    )
+                    result(nil)
                     break
                 case "polylines#update":
                     self.polylineUpdate(args: args)
