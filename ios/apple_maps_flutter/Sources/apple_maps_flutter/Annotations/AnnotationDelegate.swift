@@ -17,5 +17,6 @@ protocol AnnotationDelegate: AnyObject {
     func selectAnnotation(with id: String)
     func hideAnnotation(with id: String)
     func isAnnotationSelected(with id: String) -> Bool
+    func animateAnnotationScale(with id: String, scale: Double, durationMilliseconds: Int)
     func removeAllAnnotations()
 }

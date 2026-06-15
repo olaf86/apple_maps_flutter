@@ -201,11 +201,44 @@ extension AppleMapController: AnnotationDelegate {
         return self.mapView.selectedAnnotations.contains(where: { ($0 as? FlutterAnnotation) === annotation })
     }
 
+    func animateAnnotationScale(with id: String, scale: Double, durationMilliseconds: Int) {
+        guard let annotation = self.getAnnotation(with: id),
+              let view = self.mapView.view(for: annotation) else {
+            return
+        }
+
+        let duration = TimeInterval(durationMilliseconds) / 1000.0
+        UIView.animate(
+            withDuration: duration,
+            delay: 0,
+            usingSpringWithDamping: 0.74,
+            initialSpringVelocity: 0.22,
+            options: [.allowUserInteraction, .beginFromCurrentState],
+            animations: {
+                view.transform = self.annotationScaleTransform(
+                    for: annotation,
+                    view: view,
+                    scale: CGFloat(scale)
+                )
+            },
+            completion: nil
+        )
+    }
 
     private func removeAnnotation(id: String) {
         if let flutterAnnotation = self.annotationsById.removeValue(forKey: id) {
             self.mapView.removeAnnotation(flutterAnnotation)
         }
+    }
+
+    private func annotationScaleTransform(
+        for annotation: FlutterAnnotation,
+        view: MKAnnotationView,
+        scale: CGFloat
+    ) -> CGAffineTransform {
+        let dx = (0.5 - CGFloat(annotation.anchor.x)) * view.bounds.width * (scale - 1)
+        let dy = (0.5 - CGFloat(annotation.anchor.y)) * view.bounds.height * (scale - 1)
+        return CGAffineTransform(translationX: dx, y: dy).scaledBy(x: scale, y: scale)
     }
 
     private func initInfoWindow(annotation: FlutterAnnotation, annotationView: MKAnnotationView) {

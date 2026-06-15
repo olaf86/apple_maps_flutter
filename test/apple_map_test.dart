@@ -444,4 +444,38 @@ void main() {
     expect(platformAppleMap.appearanceMode, MapAppearanceMode.dark);
     debugDefaultTargetPlatformOverride = null;
   });
+
+  testWidgets('Controller can animate marker scale', (
+    WidgetTester tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    AppleMapController? controller;
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: AppleMap(
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(10.0, 15.0),
+          ),
+          onMapCreated: (AppleMapController value) {
+            controller = value;
+          },
+        ),
+      ),
+    );
+
+    final FakePlatformAppleMap platformAppleMap =
+        fakePlatformViewsController.lastCreatedView!;
+
+    await controller!.animateMarkerScale(
+      AnnotationId('annotation_1'),
+      scale: 1.65,
+      duration: const Duration(milliseconds: 260),
+    );
+
+    expect(platformAppleMap.animatedAnnotationId, 'annotation_1');
+    expect(platformAppleMap.animatedAnnotationScale, 1.65);
+    expect(platformAppleMap.animatedAnnotationDurationMilliseconds, 260);
+    debugDefaultTargetPlatformOverride = null;
+  });
 }
